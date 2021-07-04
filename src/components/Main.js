@@ -1,0 +1,76 @@
+import React, { Component } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
+import Map from './Map';
+
+export default class Main extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            location: {},
+            searchQuery: '',
+            imgSrc: '',
+            lon: '',
+            lat: '',
+            displayResults: false,
+        }
+    }
+    getLocationInfo = async (e) => {
+        e.preventDefault();
+
+        let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_City_Explorer_Access_Token}&q=${this.state.searchQuery}&format=json`;
+
+        let locations = await axios.get(url);
+        let locationArray = locations.data;
+        this.setState({
+            location: locationArray[0],
+            lon: locationArray[0].lon,
+            lat: locationArray[0].lat,
+            displayResults: true,
+            imgSrc: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer_Access_Token}&center=${locationArray[0].lat},${locationArray[0].lon}&zoom=17`,
+
+        });
+
+
+    }
+
+    render() {
+        return (
+            <div>
+                <Container>
+                    <Col>
+                        <Form onSubmit={this.getLocationInfo}>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label>City Name</Form.Label>
+                                <Form.Control type="text" placeholder="city name" onChange={(e) => this.setState({ searchQuery: e.target.value })} />
+                                <Form.Text className="text-muted">
+                                    Enter a valid location in the input.
+                                </Form.Text>
+                            </Form.Group>
+                            <Button variant="outline-primary" type="submit">
+                                🔍 Explore!
+                            </Button>
+                        </Form>
+                    </Col>
+                </Container>
+                <Container>
+                    <Col>
+                        {this.state.displayResults &&
+                            <Map
+                                displayName={this.state.location.display_name}
+                                longitude={this.state.lon}
+                                latitude={this.state.lat}
+                                imgSrc={this.state.imgSrc}
+                            />
+                        }
+                    </Col>
+                </Container>
+            </div>
+        )
+    }
+}
