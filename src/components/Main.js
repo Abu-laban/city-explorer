@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 import Map from './Map';
 
 export default class Main extends Component {
@@ -18,25 +19,33 @@ export default class Main extends Component {
             lon: '',
             lat: '',
             displayResults: false,
+            errorAlert: false,
         }
     }
     getLocationInfo = async (e) => {
         e.preventDefault();
 
         let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_City_Explorer_Access_Token}&q=${this.state.searchQuery}&format=json`;
+        try {
+            let locations = await axios.get(url);
+            let locationArray = locations.data;
+            this.setState({
+                location: locationArray[0],
+                lon: locationArray[0].lon,
+                lat: locationArray[0].lat,
+                displayResults: true,
+                errorAlert: false,
+                imgSrc: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer_Access_Token}&center=${locationArray[0].lat},${locationArray[0].lon}&zoom=17`,
 
-        let locations = await axios.get(url);
-        let locationArray = locations.data;
-        this.setState({
-            location: locationArray[0],
-            lon: locationArray[0].lon,
-            lat: locationArray[0].lat,
-            displayResults: true,
-            imgSrc: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer_Access_Token}&center=${locationArray[0].lat},${locationArray[0].lon}&zoom=17`,
-
-        });
-
-
+            });
+        }
+        catch (error) {
+            console.log(`💢 Axios request failed: ${error}`);
+            this.setState({
+                errorAlert: true,
+                displayResults: false,
+            })
+        }
     }
 
     render() {
@@ -70,6 +79,16 @@ export default class Main extends Component {
                         }
                     </Col>
                 </Container>
+                <Container>
+                    <Col>{this.state.errorAlert &&
+                        <Alert variant='danger'>
+                            This is a alert—check it out!
+                            💢 Axios request failed
+                        </Alert>
+                    }
+                    </Col>
+                </Container>
+
             </div>
         )
     }
