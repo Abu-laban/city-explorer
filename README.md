@@ -1,7 +1,7 @@
 # City Explorer
 
 **Author**: Tariq Abu-Laban
-**Version**: 1.0.0
+**Version**: 1.0.1
 
 ## Overview
 
@@ -41,6 +41,20 @@ Thunder Client.
 - Start time: 5:00 pm
 - Finish time: 5:45 pm
 - Actual time needed to complete: 45 minutes
+
+**Name of feature: Lab 06 Errors**
+
+- Estimate of time needed to complete: 30 minutes
+- Start time: 3:10 pm
+- Finish time: 3:37 pm
+- Actual time needed to complete: 27 minutes
+
+**Name of feature: Lab 07 Front-end**
+
+- Estimate of time needed to complete: 2 hrs
+- Start time: 7:05 pm
+- Finish time: 8:55 pm
+- Actual time needed to complete: 1 hour 50 minutes
 
 ## Credit and Collaborations
 
