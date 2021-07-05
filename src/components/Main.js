@@ -6,7 +6,8 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
-import Map from './Map';
+import Map from './Map.js';
+import Weather from './Weather.js';
 
 export default class Main extends Component {
 
@@ -20,6 +21,7 @@ export default class Main extends Component {
             lat: '',
             displayResults: false,
             errorAlert: false,
+            weatherArray: [],
         }
     }
     getLocationInfo = async (e) => {
@@ -38,9 +40,27 @@ export default class Main extends Component {
                 imgSrc: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer_Access_Token}&center=${locationArray[0].lat},${locationArray[0].lon}&zoom=17`,
 
             });
+            this.getWeather();
         }
         catch (error) {
             console.log(`💢 Axios request failed: ${error}`);
+            this.setState({
+                errorAlert: true,
+                displayResults: false,
+            })
+        }
+    }
+    getWeather = async () => {
+        try {
+            let weather = await axios.get(`${process.env.REACT_APP_SERVER}/weather?cityName=${this.state.searchQuery.charAt(0).toUpperCase() + this.state.searchQuery.slice(1)}`);
+
+            this.setState({
+                weatherArray: weather.data,
+                displayResults: true
+            });
+
+        } catch (err) {
+            console.log(`💢 Axios request failed: ${err}`);
             this.setState({
                 errorAlert: true,
                 displayResults: false,
@@ -77,6 +97,9 @@ export default class Main extends Component {
                                 imgSrc={this.state.imgSrc}
                             />
                         }
+                    </Col>
+                    <Col>
+                        <Weather weather={this.state.weatherArray} />
                     </Col>
                 </Container>
                 <Container>
