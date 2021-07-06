@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
 import Map from './Map.js';
 import Weather from './Weather.js';
+import Movies from './Movies.js';
 
 export default class Main extends Component {
 
@@ -22,8 +23,10 @@ export default class Main extends Component {
             displayResults: false,
             errorAlert: false,
             weatherArray: [],
+            movieArray: [],
         }
     }
+
     getLocationInfo = async (e) => {
         e.preventDefault();
 
@@ -41,6 +44,8 @@ export default class Main extends Component {
 
             });
             this.getWeather();
+
+            this.getMovie();
         }
         catch (error) {
             console.log(`💢 Axios request failed: ${error}`);
@@ -50,17 +55,36 @@ export default class Main extends Component {
             })
         }
     }
+
     getWeather = async () => {
         try {
-            let weather = await axios.get(`${process.env.REACT_APP_SERVER}/weather?cityName=${this.state.searchQuery.charAt(0).toUpperCase() + this.state.searchQuery.slice(1)}`);
+            const weather = await axios.get(`${process.env.REACT_APP_SERVER}/weather?cityName=${this.state.searchQuery.charAt(0).toUpperCase() + this.state.searchQuery.slice(1)}`);
 
             this.setState({
                 weatherArray: weather.data,
                 displayResults: true
             });
 
-        } catch (err) {
-            console.log(`💢 Axios request failed: ${err}`);
+        } catch (error) {
+            console.log(`💢 Axios request failed: ${error}`);
+            this.setState({
+                errorAlert: true,
+                displayResults: false,
+            })
+        }
+    }
+
+    getMovie = async () => {
+        try {
+            const movies = await axios.get(`${process.env.REACT_APP_SERVER}/movies?cityName=${this.state.searchQuery.charAt(0).toUpperCase() + this.state.searchQuery.slice(1)}`);
+
+            this.setState({
+                movieArray: movies.data,
+                displayResults: true
+            });
+
+        } catch (error) {
+            console.log(`💢 Axios request failed: ${error}`);
             this.setState({
                 errorAlert: true,
                 displayResults: false,
@@ -100,6 +124,9 @@ export default class Main extends Component {
                     </Col>
                     <Col>
                         <Weather weather={this.state.weatherArray} />
+                    </Col>
+                    <Col>
+                        <Movies movies={this.state.movieArray} />
                     </Col>
                 </Container>
                 <Container>
