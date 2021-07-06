@@ -1,7 +1,7 @@
 # City Explorer
 
 **Author**: Tariq Abu-Laban
-**Version**: 1.0.1
+**Version**: 1.0.2
 
 ## Overview
 
@@ -20,7 +20,9 @@ Bootstrap,
 axios,
 API LocationIQ,
 netlify,
-Thunder Client.
+Thunder Client,
+Heroku Server,
+dotenv,
 
 ## Change Log
 
@@ -55,6 +57,13 @@ Thunder Client.
 - Start time: 7:05 pm
 - Finish time: 8:55 pm
 - Actual time needed to complete: 1 hour 50 minutes
+
+**Name of feature: Lab 08 Front-end**
+
+- Estimate of time needed to complete: 2 hrs
+- Start time: 3:30 pm
+- Finish time: 5:25 pm
+- Actual time needed to complete: 1 hrs 55 minutes
 
 ## Credit and Collaborations
 
