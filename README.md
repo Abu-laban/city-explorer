@@ -1,7 +1,7 @@
 # City Explorer
 
 **Author**: Tariq Abu-Laban
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## Overview
 
@@ -64,6 +64,13 @@ dotenv,
 - Start time: 3:30 pm
 - Finish time: 5:25 pm
 - Actual time needed to complete: 1 hrs 55 minutes
+
+**Name of feature: Lab 09 Componentize**
+
+- Estimate of time needed to complete: 1 hrs
+- Start time: 1:10 pm
+- Finish time: 1:32 pm
+- Actual time needed to complete: 22 minutes
 
 ## Credit and Collaborations
 
