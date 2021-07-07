@@ -123,10 +123,14 @@ export default class Main extends Component {
                         }
                     </Col>
                     <Col>
-                        <Weather weather={this.state.weatherArray} />
+                        {this.state.displayResults &&
+                            <Weather weather={this.state.weatherArray} />
+                        }
                     </Col>
                     <Col>
-                        <Movies movies={this.state.movieArray} />
+                        {this.state.displayResults &&
+                            <Movies movies={this.state.movieArray} />
+                        }
                     </Col>
                 </Container>
                 <Container>
