@@ -9,6 +9,7 @@ import Alert from 'react-bootstrap/Alert'
 import Map from './Map.js';
 import Weather from './Weather.js';
 import Movies from './Movies.js';
+import Yelp from './Yelp.js';
 
 export default class Main extends Component {
 
@@ -24,6 +25,7 @@ export default class Main extends Component {
             errorAlert: false,
             weatherArray: [],
             movieArray: [],
+            yelpArray: [],
         }
     }
 
@@ -46,6 +48,8 @@ export default class Main extends Component {
             this.getWeather();
 
             this.getMovie();
+
+            this.getYelp();
         }
         catch (error) {
             console.log(`💢 Axios request failed: ${error}`);
@@ -82,6 +86,26 @@ export default class Main extends Component {
                 movieArray: movies.data,
                 displayResults: true
             });
+
+        } catch (error) {
+            console.log(`💢 Axios request failed: ${error}`);
+            this.setState({
+                errorAlert: true,
+                displayResults: false,
+            })
+        }
+    }
+
+    getYelp = async () => {
+        try {
+            const yelps = await axios.get(`${process.env.REACT_APP_SERVER}/yelp?cityName=${this.state.searchQuery}`);
+
+            this.setState({
+                yelpArray: yelps.data,
+                displayResults: true
+            });
+
+            console.log(this.state.yelpArray);
 
         } catch (error) {
             console.log(`💢 Axios request failed: ${error}`);
@@ -130,6 +154,11 @@ export default class Main extends Component {
                     <Col>
                         {this.state.displayResults &&
                             <Movies movies={this.state.movieArray} />
+                        }
+                    </Col>
+                    <Col>
+                        {this.state.displayResults &&
+                            <Yelp yelp={this.state.yelpArray} />
                         }
                     </Col>
                 </Container>
